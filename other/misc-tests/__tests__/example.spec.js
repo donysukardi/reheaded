@@ -1,3 +1,1 @@
-it('tests without error', () => {
-
-});
+it('tests without error', () => {})

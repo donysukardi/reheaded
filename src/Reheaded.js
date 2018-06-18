@@ -1,15 +1,14 @@
 import { Component } from 'react'
 import PropTypes from 'prop-types'
 import shallowequal from 'shallowequal'
-import 'raf/polyfill';
+import 'raf/polyfill'
 
 import shouldUpdate from './shouldUpdate'
 
 const noop = () => {}
 
 class Reheaded extends Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props)
     // Class variables.
     this.currentScrollY = 0
@@ -23,7 +22,7 @@ class Reheaded extends Component {
   }
 
   setRef = ref => {
-    this.inner = ref;
+    this.inner = ref
   }
 
   setHeightOffset = () => {
@@ -34,7 +33,7 @@ class Reheaded extends Component {
   }
 
   getScrollY = () => {
-    const parent = this.props.parent();
+    const parent = this.props.parent()
     /* istanbul ignore else  */
     if (parent.pageYOffset !== undefined) {
       return parent.pageYOffset
@@ -42,40 +41,40 @@ class Reheaded extends Component {
       return parent.scrollTop
     }
     /* istanbul ignore next line */
-    return (document.documentElement || document.body.parentNode || document.body).scrollTop
+    return (
+      document.documentElement ||
+      document.body.parentNode ||
+      document.body
+    ).scrollTop
   }
 
-  getViewportHeight = () => (
+  getViewportHeight = () =>
     /* istanbul ignore next line */
-    window.innerHeight
-      || document.documentElement.clientHeight
-      || document.body.clientHeight
-  )
+    window.innerHeight ||
+    document.documentElement.clientHeight ||
+    document.body.clientHeight
 
   getDocumentHeight = /* istanbul ignore next */ () => {
-    const { body, documentElement } = document;
+    const { body, documentElement } = document
     return Math.max(
-      body.scrollHeight, documentElement.scrollHeight,
-      body.offsetHeight, documentElement.offsetHeight,
-      body.clientHeight, documentElement.clientHeight
+      body.scrollHeight,
+      documentElement.scrollHeight,
+      body.offsetHeight,
+      documentElement.offsetHeight,
+      body.clientHeight,
+      documentElement.clientHeight,
     )
   }
 
-  getElementPhysicalHeight = elm => Math.max(
-    elm.offsetHeight,
-    elm.clientHeight
-  )
+  getElementPhysicalHeight = elm => Math.max(elm.offsetHeight, elm.clientHeight)
 
-  getElementHeight = elm => Math.max(
-    elm.scrollHeight,
-    elm.offsetHeight,
-    elm.clientHeight,
-  )
+  getElementHeight = elm =>
+    Math.max(elm.scrollHeight, elm.offsetHeight, elm.clientHeight)
 
   getScrollerPhysicalHeight = () => {
     const parent = this.props.parent()
 
-    return (parent === window || parent === document.body)
+    return parent === window || parent === document.body
       ? /* istanbul ignore next */ this.getViewportHeight()
       : this.getElementPhysicalHeight(parent)
   }
@@ -83,20 +82,20 @@ class Reheaded extends Component {
   getScrollerHeight = () => {
     const parent = this.props.parent()
 
-    return (parent === window || parent === document.body)
+    return parent === window || parent === document.body
       ? /* istanbul ignore next */ this.getDocumentHeight()
       : this.getElementHeight(parent)
   }
 
-  isOutOfBound = (currentScrollY) => {
-    const pastTop = currentScrollY < 0;
+  isOutOfBound = currentScrollY => {
+    const pastTop = currentScrollY < 0
 
-    const scrollerPhysicalHeight = this.getScrollerPhysicalHeight();
-    const scrollerHeight = this.getScrollerHeight();
+    const scrollerPhysicalHeight = this.getScrollerPhysicalHeight()
+    const scrollerHeight = this.getScrollerHeight()
 
-    const pastBottom = currentScrollY + scrollerPhysicalHeight > scrollerHeight;
+    const pastBottom = currentScrollY + scrollerPhysicalHeight > scrollerHeight
 
-    return pastTop || pastBottom;
+    return pastTop || pastBottom
   }
 
   handleScroll = () => {
@@ -118,7 +117,7 @@ class Reheaded extends Component {
   unpin = () => {
     this.props.onUnpin()
     this.setState({
-      state: 'unpinned'
+      state: 'unpinned',
     })
   }
 
@@ -137,14 +136,14 @@ class Reheaded extends Component {
   }
 
   update = () => {
-    this.currentScrollY = this.getScrollY();
+    this.currentScrollY = this.getScrollY()
     /* istanbul ignore else  */
     if (!this.isOutOfBound(this.currentScrollY)) {
       const { action } = shouldUpdate(
         this.lastKnownScrollY,
         this.currentScrollY,
         this.props,
-        this.state
+        this.state,
       )
 
       /* istanbul ignore else  */
@@ -161,11 +160,11 @@ class Reheaded extends Component {
     this.scrollTicking = false
   }
 
-  componentDidMount () {
-    const { disabled, parent: parentFn, calcHeightOnResize } = this.props;
-    this.setHeightOffset();
+  componentDidMount() {
+    const { disabled, parent: parentFn, calcHeightOnResize } = this.props
+    this.setHeightOffset()
     if (!disabled) {
-      const parent = parentFn();
+      const parent = parentFn()
       parent.addEventListener('scroll', this.handleScroll)
       if (calcHeightOnResize) {
         parent.addEventListener('resize', this.handleResize)
@@ -173,47 +172,45 @@ class Reheaded extends Component {
     }
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     return (
       !shallowequal(this.props, nextProps) ||
       !shallowequal(this.state, nextState)
     )
   }
 
-  componentDidUpdate (prevProps) {
-    const parent = this.props.parent();
+  componentDidUpdate(prevProps) {
+    const parent = this.props.parent()
     if (this.props.disabled && !prevProps.disabled) {
       this.unfix()
       parent.removeEventListener('scroll', this.handleScroll)
       parent.removeEventListener('resize', this.handleResize)
     } else if (!this.props.disabled && prevProps.disabled) {
-      parent.addEventListener('scroll', this.handleScroll);
+      parent.addEventListener('scroll', this.handleScroll)
       /* istanbul ignore else  */
       if (this.props.calcHeightOnResize) {
-        parent.addEventListener('resize', this.handleResize);
+        parent.addEventListener('resize', this.handleResize)
       }
     }
   }
 
-  componentWillUnmount () {
-    const parent = this.props.parent();
-    parent.removeEventListener('scroll', this.handleScroll);
+  componentWillUnmount() {
+    const parent = this.props.parent()
+    parent.removeEventListener('scroll', this.handleScroll)
     /* istanbul ignore else  */
-    if(parent !== window) {
-      window.removeEventListener('scroll', this.handleScroll);
+    if (parent !== window) {
+      window.removeEventListener('scroll', this.handleScroll)
     }
-    parent.removeEventListener('resize', this.handleResize);
+    parent.removeEventListener('resize', this.handleResize)
   }
 
-  render () {
+  render() {
     const { children } = this.props
 
-    return (
-      children({
-        setRef: this.setRef,
-        ...this.state,
-      })
-    )
+    return children({
+      setRef: this.setRef,
+      ...this.state,
+    })
   }
 }
 
@@ -228,7 +225,7 @@ Reheaded.propTypes = {
   onUnfix: PropTypes.func,
   pinStart: PropTypes.number,
   calcHeightOnResize: PropTypes.bool,
-};
+}
 
 Reheaded.defaultProps = {
   parent: () => window,
@@ -240,6 +237,6 @@ Reheaded.defaultProps = {
   onUnfix: noop,
   pinStart: 0,
   calcHeightOnResize: true,
-};
+}
 
-export default Reheaded;
+export default Reheaded

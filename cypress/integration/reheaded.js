@@ -15,7 +15,7 @@ describe('Page', () => {
       'unpinned',
     )
 
-    cy.scrollTo(0, '80%', {duration: 1500})
+    cy.scrollTo(0, '80%', { duration: 1500 })
     cy.getInStoryByTestId('headerContainer').should(
       'have.attr',
       'data-state',
@@ -64,7 +64,7 @@ describe('Page', () => {
       'data-state',
       'unfixed',
     )
-    cy.scrollTo(0, '80%', {duration: 1500})
+    cy.scrollTo(0, '80%', { duration: 1500 })
     cy.getInStoryByTestId('headerContainer').should(
       'have.attr',
       'data-state',

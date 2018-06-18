@@ -1,39 +1,35 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { GoogleFont, TypographyStyle } from 'react-typography';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { GoogleFont, TypographyStyle } from 'react-typography'
 
-import Headroom from '../../src/index';
-import typography from '../utils/typography';
+import Headroom from '../../src/index'
+import typography from '../utils/typography'
 
-import Header from '../components/Header';
-import PageContent from '../components/PageContent';
+import Header from '../components/Header'
+import PageContent from '../components/PageContent'
 import {
   Container,
   HeaderWrapper,
   ContentWrapper,
   Heading,
   CornerButtonWrapper,
-} from '../components/styles';
+} from '../components/styles'
 
 class Page extends React.Component {
   state = {
-    disabled: false
+    disabled: false,
   }
 
   toggleDisabled = () => {
     this.setState(state => ({
-      disabled: !state.disabled
+      disabled: !state.disabled,
     }))
   }
 
   render() {
-    const {
-      onUnfix,
-      onPin,
-      onUnpin,
-    } = this.props;
+    const { onUnfix, onPin, onUnpin } = this.props
 
-    const { disabled } = this.state;
+    const { disabled } = this.state
 
     return (
       <div>
@@ -60,9 +56,7 @@ class Page extends React.Component {
               >
                 <Container>
                   <HeaderWrapper>
-                    <Heading>
-                      reheaded
-                    </Heading>
+                    <Heading>reheaded</Heading>
                   </HeaderWrapper>
                 </Container>
               </Header>
@@ -75,12 +69,16 @@ class Page extends React.Component {
           </ContentWrapper>
         </Container>
         <CornerButtonWrapper>
-          <button data-testid="disabledButton" type="button" onClick={this.toggleDisabled}>
+          <button
+            data-testid="disabledButton"
+            type="button"
+            onClick={this.toggleDisabled}
+          >
             {`Toggle Disabled ${disabled ? 'Off' : 'On'}`}
           </button>
         </CornerButtonWrapper>
       </div>
-    );
+    )
   }
 }
 
@@ -90,4 +88,4 @@ Page.propTypes = {
   onUnpin: PropTypes.func,
 }
 
-export default Page;
+export default Page

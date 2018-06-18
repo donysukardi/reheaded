@@ -1,1 +1,1 @@
-export { default } from './Reheaded';
+export { default } from './Reheaded'

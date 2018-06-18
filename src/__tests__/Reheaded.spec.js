@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {cleanup, render, renderIntoDocument} from 'react-testing-library'
+import { cleanup, render, renderIntoDocument } from 'react-testing-library'
 import 'jest-dom/extend-expect'
 
 import Reheaded from '../Reheaded'
@@ -24,10 +24,10 @@ const getParent = () => ({
   offsetHeight: 50,
 })
 
-const ReheadedExample = ({reheadedRef, ...props}) => (
-  <div style={{minHeight: '100vh'}}>
+const ReheadedExample = ({ reheadedRef, ...props }) => (
+  <div style={{ minHeight: '100vh' }}>
     <Reheaded {...props} ref={reheadedRef}>
-      {({setRef, height, state}) => (
+      {({ setRef, height, state }) => (
         <div
           data-testid="reheadedWrapper"
           style={{
@@ -50,7 +50,7 @@ ReheadedExample.propTypes = {
 }
 
 test('Reheaded component renders properly', () => {
-  const {getByTestId, container} = render(<ReheadedExample />)
+  const { getByTestId, container } = render(<ReheadedExample />)
   expect(getByTestId('ReheadedState')).toHaveTextContent('unfixed')
   expect(container.firstChild).toMatchSnapshot()
 })
@@ -65,7 +65,7 @@ test('Reheaded does not register on resize event listener if calcHeightOnResize 
 
 test('Reheaded didMount registers scroll event listener', () => {
   const parent = getParent()
-  const {unmount} = render(<ReheadedExample parent={() => parent} />)
+  const { unmount } = render(<ReheadedExample parent={() => parent} />)
 
   expect(parent.addEventListener.mock.calls[0][0]).toBe('scroll')
   expect(parent.addEventListener.mock.calls[1][0]).toBe('resize')
@@ -79,7 +79,7 @@ test('Reheaded toggling disabled on should remove event listeners', () => {
   const parent = getParent()
   const parentFn = () => parent
 
-  const {rerender} = render(<ReheadedExample parent={parentFn} />)
+  const { rerender } = render(<ReheadedExample parent={parentFn} />)
 
   expect(parent.addEventListener.mock.calls[0][0]).toBe('scroll')
   expect(parent.addEventListener.mock.calls[1][0]).toBe('resize')
@@ -94,7 +94,7 @@ test('Reheaded toggling disabled off should add event listeners', () => {
   const parent = getParent()
   const parentFn = () => parent
 
-  const {rerender} = render(<ReheadedExample parent={parentFn} disabled />)
+  const { rerender } = render(<ReheadedExample parent={parentFn} disabled />)
 
   expect(parent.addEventListener).not.toHaveBeenCalled()
 
@@ -111,7 +111,7 @@ test('Reheaded setHeightOffset updates the height in state', () => {
     reheadedRef = ref
   }
 
-  const {getByTestId} = render(
+  const { getByTestId } = render(
     <ReheadedExample parent={() => parent} reheadedRef={setreheadedRef} />,
   )
 
@@ -135,7 +135,7 @@ test('Reheaded handle scroll', async () => {
 
   const parent = getParent()
 
-  const {getByTestId} = renderIntoDocument(
+  const { getByTestId } = renderIntoDocument(
     <ReheadedExample
       onPin={onPinSpy}
       onUnpin={onUnpinSpy}

@@ -1,21 +1,21 @@
-import React from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import { ClickOutside } from 'react-goodies';
-import { GoogleFont, TypographyStyle } from 'react-typography';
+import React from 'react'
+import styled from 'styled-components'
+import PropTypes from 'prop-types'
+import { ClickOutside } from 'react-goodies'
+import { GoogleFont, TypographyStyle } from 'react-typography'
 
-import Headroom from '../../src/index';
-import typography from '../utils/typography';
+import Headroom from '../../src/index'
+import typography from '../utils/typography'
 
-import Header from '../components/Header';
-import BackToTop from '../components/BackToTop';
-import PageContent from '../components/PageContent';
+import Header from '../components/Header'
+import BackToTop from '../components/BackToTop'
+import PageContent from '../components/PageContent'
 import {
   Container,
   HeaderWrapper,
   ContentWrapper,
   Heading,
-} from '../components/styles';
+} from '../components/styles'
 
 const Menu = styled.div`
   display: flex;
@@ -31,12 +31,14 @@ const NavPopper = styled.div`
   position: absolute;
   padding: 16px;
   left: -9999999px;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
   opacity: 1;
   background-color: white;
   min-width: 280px;
 
-  ${props => props.active && `
+  ${props =>
+    props.active &&
+    `
     left: auto;
     right: 0;
     opacity: 1;
@@ -46,34 +48,26 @@ const NavPopper = styled.div`
 
 class Page extends React.Component {
   state = {
-    navExpanded: false
+    navExpanded: false,
   }
 
   toggleNav = e => {
-    e.preventDefault();
+    e.preventDefault()
     this.setState(state => ({
-      navExpanded: !state.navExpanded
+      navExpanded: !state.navExpanded,
     }))
   }
 
   render() {
-    const {
-      onUnfix,
-      onPin,
-      onUnpin,
-    } = this.props;
+    const { onUnfix, onPin, onUnpin } = this.props
 
-    const { navExpanded } = this.state;
+    const { navExpanded } = this.state
 
     return (
       <div>
         <GoogleFont typography={typography} />
         <TypographyStyle typography={typography} />
-        <Headroom
-          onUnfix={onUnfix}
-          onPin={onPin}
-          onUnpin={onUnpin}
-        >
+        <Headroom onUnfix={onUnfix} onPin={onPin} onUnpin={onUnpin}>
           {({ setRef, height, state }) => (
             <div
               style={{
@@ -91,9 +85,7 @@ class Page extends React.Component {
                 <Container>
                   <HeaderWrapper>
                     <Menu>
-                      <Heading>
-                        reheaded
-                      </Heading>
+                      <Heading>reheaded</Heading>
                       <ClickOutside
                         disabled={!navExpanded}
                         onClickOutside={this.toggleNav}
@@ -103,7 +95,7 @@ class Page extends React.Component {
                             <button type="button" onClick={this.toggleNav}>
                               Menu
                             </button>
-                            <NavPopper  active={navExpanded}>
+                            <NavPopper active={navExpanded}>
                               <ul>
                                 <li>Menu Item 1</li>
                                 <li>Menu Item 2</li>
@@ -112,15 +104,13 @@ class Page extends React.Component {
                               </ul>
                             </NavPopper>
                           </Nav>
-                          )}
+                        )}
                       </ClickOutside>
                     </Menu>
                   </HeaderWrapper>
                 </Container>
               </Header>
-              <BackToTop
-                pinned={state !== 'unfixed'}
-              />
+              <BackToTop pinned={state !== 'unfixed'} />
             </div>
           )}
         </Headroom>
@@ -130,7 +120,7 @@ class Page extends React.Component {
           </ContentWrapper>
         </Container>
       </div>
-    );
+    )
   }
 }
 
@@ -140,4 +130,4 @@ Page.propTypes = {
   onUnpin: PropTypes.func,
 }
 
-export default Page;
+export default Page

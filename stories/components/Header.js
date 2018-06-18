@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 const StyledHeader = styled.header`
   background: rgb(57, 111, 176);
-  box-shadow: 1px 1px 1px rgba(0,0,0,0.25);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
   top: 0;
   left: 0;
   right: 0;
@@ -12,14 +12,17 @@ const StyledHeader = styled.header`
   position: relative;
   transform: translateY(0);
 
-  ${props => (props.forcePin || props.state !== 'unfixed') && `
+  ${props =>
+    (props.forcePin || props.state !== 'unfixed') &&
+    `
     position: fixed;
     transition: all .2s ease-in-out;
-  `}
-
-  ${props => (props.shouldHide && !props.forcePin) && `
+  `} ${props =>
+    props.shouldHide &&
+    !props.forcePin &&
+    `
     transform: translateY(-100%)
-  `}
+  `};
 `
 
 class Header extends Component {
@@ -31,16 +34,19 @@ class Header extends Component {
     }
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     if (this.props.state !== prevProps.state) {
       if (this.props.state === 'unpinned') {
-        this.setState({
-          shouldHide: true,
-        }, () => {
-          setTimeout(() => {
-            this.setState({ state: 'unpinned' })
-          }, 0)
-        })
+        this.setState(
+          {
+            shouldHide: true,
+          },
+          () => {
+            setTimeout(() => {
+              this.setState({ state: 'unpinned' })
+            }, 0)
+          },
+        )
       } else {
         this.setState({
           shouldHide: false,
@@ -50,7 +56,7 @@ class Header extends Component {
     }
   }
 
-  render () {
+  render() {
     const { state, forcePin, ...restProps } = this.props
     return (
       <StyledHeader

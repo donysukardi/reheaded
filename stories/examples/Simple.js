@@ -1,36 +1,28 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { GoogleFont, TypographyStyle } from 'react-typography';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { GoogleFont, TypographyStyle } from 'react-typography'
 
-import Headroom from '../../src/index';
-import typography from '../utils/typography';
+import Headroom from '../../src/index'
+import typography from '../utils/typography'
 
-import Header from '../components/Header';
-import PageContent from '../components/PageContent';
+import Header from '../components/Header'
+import PageContent from '../components/PageContent'
 import {
   Container,
   HeaderWrapper,
   ContentWrapper,
   Heading,
-} from '../components/styles';
+} from '../components/styles'
 
 class Page extends React.Component {
   render() {
-    const {
-      onUnfix,
-      onPin,
-      onUnpin,
-    } = this.props;
+    const { onUnfix, onPin, onUnpin } = this.props
 
     return (
       <div>
         <GoogleFont typography={typography} />
         <TypographyStyle typography={typography} />
-        <Headroom
-          onUnfix={onUnfix}
-          onPin={onPin}
-          onUnpin={onUnpin}
-        >
+        <Headroom onUnfix={onUnfix} onPin={onPin} onUnpin={onUnpin}>
           {({ setRef, height, state }) => (
             <div
               style={{
@@ -45,9 +37,7 @@ class Page extends React.Component {
               >
                 <Container>
                   <HeaderWrapper>
-                    <Heading>
-                      reheaded
-                    </Heading>
+                    <Heading>reheaded</Heading>
                   </HeaderWrapper>
                 </Container>
               </Header>
@@ -60,7 +50,7 @@ class Page extends React.Component {
           </ContentWrapper>
         </Container>
       </div>
-    );
+    )
   }
 }
 
@@ -70,4 +60,4 @@ Page.propTypes = {
   onUnpin: PropTypes.func,
 }
 
-export default Page;
+export default Page

@@ -38,7 +38,7 @@ import { Reheaded } from 'reheaded'
 class Example extends Component {
   /* event hanlders */
 
-  render () {
+  render() {
     return (
       <Reheaded
         onPin={this.onPin}
@@ -51,10 +51,7 @@ class Example extends Component {
               height,
             }}
           >
-            <Header
-              innerRef={setRef}
-              state={state}
-            >
+            <Header innerRef={setRef} state={state}>
               Reheaded
             </Header>
           </div>
@@ -73,6 +70,7 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 <!-- prettier-ignore -->
 | [<img src="https://avatars0.githubusercontent.com/u/410792?v=4" width="100px;"/><br /><sub><b>Dony Sukardi</b></sub>](http://dsds.io)<br />[💻](https://github.com/donysukardi/reheaded/commits?author=donysukardi "Code") [📖](https://github.com/donysukardi/reheaded/commits?author=donysukardi "Documentation") [💡](#example-donysukardi "Examples") [🤔](#ideas-donysukardi "Ideas, Planning, & Feedback") [👀](#review-donysukardi "Reviewed Pull Requests") [⚠️](https://github.com/donysukardi/reheaded/commits?author=donysukardi "Tests") |
 | :---: |
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
