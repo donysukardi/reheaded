@@ -8,30 +8,6 @@ import shouldUpdate from './shouldUpdate'
 const noop = () => {}
 
 class Reheaded extends Component {
-  static propTypes = {
-    parent: PropTypes.func,
-    children: PropTypes.func.isRequired,
-    disabled: PropTypes.bool,
-    upTolerance: PropTypes.number,
-    downTolerance: PropTypes.number,
-    onPin: PropTypes.func,
-    onUnpin: PropTypes.func,
-    onUnfix: PropTypes.func,
-    pinStart: PropTypes.number,
-    calcHeightOnResize: PropTypes.bool,
-  };
-
-  static defaultProps = {
-    parent: () => window,
-    disabled: false,
-    upTolerance: 5,
-    downTolerance: 5,
-    onPin: noop,
-    onUnpin: noop,
-    onUnfix: noop,
-    pinStart: 0,
-    calcHeightOnResize: true,
-  };
 
   constructor (props) {
     super(props)
@@ -44,50 +20,6 @@ class Reheaded extends Component {
       state: 'unfixed',
       height: 0,
     }
-  }
-
-  componentDidMount () {
-    const { disabled, parent: parentFn, calcHeightOnResize } = this.props;
-    this.setHeightOffset();
-    if (!disabled) {
-      const parent = parentFn();
-      parent.addEventListener('scroll', this.handleScroll)
-      if (calcHeightOnResize) {
-        parent.addEventListener('resize', this.handleResize)
-      }
-    }
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    return (
-      !shallowequal(this.props, nextProps) ||
-      !shallowequal(this.state, nextState)
-    )
-  }
-
-  componentDidUpdate (prevProps) {
-    const parent = this.props.parent();
-    if (this.props.disabled && !prevProps.disabled) {
-      this.unfix()
-      parent.removeEventListener('scroll', this.handleScroll)
-      parent.removeEventListener('resize', this.handleResize)
-    } else if (!this.props.disabled && prevProps.disabled) {
-      parent.addEventListener('scroll', this.handleScroll);
-      /* istanbul ignore else  */
-      if (this.props.calcHeightOnResize) {
-        parent.addEventListener('resize', this.handleResize);
-      }
-    }
-  }
-
-  componentWillUnmount () {
-    const parent = this.props.parent();
-    parent.removeEventListener('scroll', this.handleScroll);
-    /* istanbul ignore else  */
-    if(parent !== window) {
-      window.removeEventListener('scroll', this.handleScroll);
-    }
-    parent.removeEventListener('resize', this.handleResize);
   }
 
   setRef = ref => {
@@ -229,6 +161,50 @@ class Reheaded extends Component {
     this.scrollTicking = false
   }
 
+  componentDidMount () {
+    const { disabled, parent: parentFn, calcHeightOnResize } = this.props;
+    this.setHeightOffset();
+    if (!disabled) {
+      const parent = parentFn();
+      parent.addEventListener('scroll', this.handleScroll)
+      if (calcHeightOnResize) {
+        parent.addEventListener('resize', this.handleResize)
+      }
+    }
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    return (
+      !shallowequal(this.props, nextProps) ||
+      !shallowequal(this.state, nextState)
+    )
+  }
+
+  componentDidUpdate (prevProps) {
+    const parent = this.props.parent();
+    if (this.props.disabled && !prevProps.disabled) {
+      this.unfix()
+      parent.removeEventListener('scroll', this.handleScroll)
+      parent.removeEventListener('resize', this.handleResize)
+    } else if (!this.props.disabled && prevProps.disabled) {
+      parent.addEventListener('scroll', this.handleScroll);
+      /* istanbul ignore else  */
+      if (this.props.calcHeightOnResize) {
+        parent.addEventListener('resize', this.handleResize);
+      }
+    }
+  }
+
+  componentWillUnmount () {
+    const parent = this.props.parent();
+    parent.removeEventListener('scroll', this.handleScroll);
+    /* istanbul ignore else  */
+    if(parent !== window) {
+      window.removeEventListener('scroll', this.handleScroll);
+    }
+    parent.removeEventListener('resize', this.handleResize);
+  }
+
   render () {
     const { children } = this.props
 
@@ -240,5 +216,30 @@ class Reheaded extends Component {
     )
   }
 }
+
+Reheaded.propTypes = {
+  parent: PropTypes.func,
+  children: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
+  upTolerance: PropTypes.number,
+  downTolerance: PropTypes.number,
+  onPin: PropTypes.func,
+  onUnpin: PropTypes.func,
+  onUnfix: PropTypes.func,
+  pinStart: PropTypes.number,
+  calcHeightOnResize: PropTypes.bool,
+};
+
+Reheaded.defaultProps = {
+  parent: () => window,
+  disabled: false,
+  upTolerance: 5,
+  downTolerance: 5,
+  onPin: noop,
+  onUnpin: noop,
+  onUnfix: noop,
+  pinStart: 0,
+  calcHeightOnResize: true,
+};
 
 export default Reheaded;

@@ -9,7 +9,7 @@ cache:
     - node_modules
 notifications:
   email: false
-script: yarn validate
+script: yarn --cwd stories install && yarn validate
 after_success: kcd-scripts travis-after-success
 branches:
   only: master
