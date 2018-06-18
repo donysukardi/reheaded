@@ -7,7 +7,6 @@ cache:
   directories:
     - ~/.npm
     - ~/.cache
-    - node_modules
 notifications:
   email: false
 before_script: yarn --cwd stories install
