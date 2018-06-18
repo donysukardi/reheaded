@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Reheaded component renders properly 1`] = `
+<div
+  style="min-height: 100vh;"
+>
+  <div
+    data-testid="reheadedWrapper"
+    style="height: 0px;"
+  >
+    <header
+      data-testid="headerContainer"
+    >
+      <h1>
+        This is header
+      </h1>
+      <div
+        data-testid="ReheadedState"
+      >
+        unfixed
+      </div>
+    </header>
+  </div>
+  <div>
+    This is some content
+  </div>
+</div>
+`;
