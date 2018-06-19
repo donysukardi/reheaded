@@ -33,7 +33,7 @@ npm install --save reheaded
 ```jsx
 import React, { Component } from 'react'
 
-import { Reheaded } from 'reheaded'
+import Reheaded from 'reheaded'
 
 class Example extends Component {
   /* event hanlders */
