@@ -4,8 +4,7 @@ import shallowequal from 'shallowequal'
 import 'raf/polyfill'
 
 import shouldUpdate from './shouldUpdate'
-
-const noop = () => {}
+import { noop, unwrapArray } from './utils'
 
 class Reheaded extends Component {
   constructor(props) {
@@ -205,7 +204,7 @@ class Reheaded extends Component {
   }
 
   render() {
-    const { children } = this.props
+    const children = unwrapArray(this.props.children, noop)
 
     return children({
       setRef: this.setRef,

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { cleanup, render, renderIntoDocument } from 'react-testing-library'
+import { cleanup, render } from 'react-testing-library'
 import 'jest-dom/extend-expect'
 
 import Reheaded from '../Reheaded'
@@ -135,7 +135,7 @@ test('Reheaded handle scroll', async () => {
 
   const parent = getParent()
 
-  const { getByTestId } = renderIntoDocument(
+  const { getByTestId } = render(
     <ReheadedExample
       onPin={onPinSpy}
       onUnpin={onUnpinSpy}
