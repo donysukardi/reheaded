@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { GoogleFont, TypographyStyle } from 'react-typography'
 
-import Headroom from '../../src/index'
+import Reheaded from '../../src/index'
 import typography from '../utils/typography'
 
 import Header from '../components/Header'
@@ -23,12 +23,11 @@ class Page extends React.Component {
       <div>
         <GoogleFont typography={typography} />
         <TypographyStyle typography={typography} />
-        <Headroom onUnfix={onUnfix} onPin={onPin} onUnpin={onUnpin}>
+        <Reheaded onUnfix={onUnfix} onPin={onPin} onUnpin={onUnpin}>
           {({ setRef, height, state }) => (
             <div
               style={{
-                height,
-                marginBottom: '24px',
+                height
               }}
             >
               <Header
@@ -46,7 +45,7 @@ class Page extends React.Component {
               <BackToTop pinned={state !== 'unfixed'} />
             </div>
           )}
-        </Headroom>
+        </Reheaded>
         <Container>
           <ContentWrapper>
             <PageContent />

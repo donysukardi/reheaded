@@ -18,6 +18,14 @@ storiesOf('Reheaded', module)
       onUnfix={action('onUnfix')}
     />
   ))
+  .add('sticky', () => (
+    <Simple
+      sticky
+      onPin={action('onPin')}
+      onUnpin={action('onUnpin')}
+      onUnfix={action('onUnfix')}
+    />
+  ))
   .add('back to top', () => (
     <BackToTop
       onPin={action('onPin')}

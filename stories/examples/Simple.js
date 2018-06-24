@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { GoogleFont, TypographyStyle } from 'react-typography'
 
-import Headroom from '../../src/index'
+import Reheaded from '../../src/index'
 import typography from '../utils/typography'
 
 import Header from '../components/Header'
@@ -16,24 +16,21 @@ import {
 
 class Page extends React.Component {
   render() {
-    const { onUnfix, onPin, onUnpin } = this.props
+    const { sticky, onUnfix, onPin, onUnpin } = this.props
 
     return (
       <div>
         <GoogleFont typography={typography} />
         <TypographyStyle typography={typography} />
-        <Headroom onUnfix={onUnfix} onPin={onPin} onUnpin={onUnpin}>
-          {({ setRef, height, state }) => (
-            <div
-              style={{
-                height,
-              }}
-            >
+        <Reheaded calcHeightOnResize={!sticky} onUnfix={onUnfix} onPin={onPin} onUnpin={onUnpin}>
+          {({ setRef, height, state }) => {
+            const content = (
               <Header
                 innerRef={setRef}
                 data-testid="headerContainer"
                 data-state={state}
                 state={state}
+                sticky={sticky}
               >
                 <Container>
                   <HeaderWrapper>
@@ -41,9 +38,13 @@ class Page extends React.Component {
                   </HeaderWrapper>
                 </Container>
               </Header>
-            </div>
-          )}
-        </Headroom>
+            )
+
+            return sticky
+              ? content
+              : <div style={{ height }}>{content}</div>
+          }}
+        </Reheaded>
         <Container>
           <ContentWrapper>
             <PageContent />
@@ -55,6 +56,7 @@ class Page extends React.Component {
 }
 
 Page.propTypes = {
+  sticky: PropTypes.bool,
   onUnfix: PropTypes.func,
   onPin: PropTypes.func,
   onUnpin: PropTypes.func,

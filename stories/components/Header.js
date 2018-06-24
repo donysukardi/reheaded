@@ -15,8 +15,8 @@ const StyledHeader = styled.header`
   ${props =>
     (props.forcePin || props.state !== 'unfixed') &&
     `
-    position: fixed;
-    transition: all .2s ease-in-out;
+    position: ${props.sticky ? 'sticky' : 'fixed'};
+    transition: transform .2s ease-in-out;
   `} ${props =>
     props.shouldHide &&
     !props.forcePin &&
@@ -42,9 +42,9 @@ class Header extends Component {
             shouldHide: true,
           },
           () => {
-            setTimeout(() => {
+            window.requestAnimationFrame(() => {
               this.setState({ state: 'unpinned' })
-            }, 0)
+            })
           },
         )
       } else {

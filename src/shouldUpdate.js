@@ -3,6 +3,7 @@ export default function(
   currentScrollY = 0,
   props = {},
   state = {},
+  height
 ) {
   const scrollDirection = currentScrollY >= lastKnownScrollY ? 'down' : 'up'
   const distanceScrolled = Math.abs(currentScrollY - lastKnownScrollY)
@@ -23,7 +24,7 @@ export default function(
     }
     // We're unfixed and headed down. Carry on.
   } else if (
-    currentScrollY <= state.height &&
+    currentScrollY <= height &&
     scrollDirection === 'down' &&
     state.state === 'unfixed'
   ) {
@@ -37,7 +38,7 @@ export default function(
   } else if (
     scrollDirection === 'down' &&
     ['pinned', 'unfixed'].indexOf(state.state) >= 0 &&
-    currentScrollY > state.height + props.pinStart &&
+    currentScrollY > height + props.pinStart &&
     distanceScrolled > props.downTolerance
   ) {
     return {
@@ -60,7 +61,7 @@ export default function(
     // We transition to pin regardless of upTolerance
   } else if (
     scrollDirection === 'up' &&
-    currentScrollY <= state.height &&
+    currentScrollY <= height &&
     ['pinned', 'unfixed'].indexOf(state.state) < 0
   ) {
     return {

@@ -25,9 +25,12 @@ class Reheaded extends Component {
   }
 
   setHeightOffset = () => {
-    this.setState({
-      height: this.inner.offsetHeight,
-    })
+    this.setState(state =>
+      state.height === this.inner.offsetHeight
+        ? null
+        : { height: this.inner.offsetHeight }
+    )
+
     this.resizeTicking = false
   }
 
@@ -143,6 +146,7 @@ class Reheaded extends Component {
         this.currentScrollY,
         this.props,
         this.state,
+        this.state.height
       )
 
       /* istanbul ignore else  */
