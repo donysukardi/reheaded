@@ -13,64 +13,17 @@ const StyledHeader = styled.header`
   transform: translateY(0);
 
   ${props =>
-    (props.forcePin || props.state !== 'unfixed') &&
+    (props.state !== 'unfixed') &&
     `
     position: ${props.sticky ? 'sticky' : 'fixed'};
-    transition: transform .2s ease-in-out;
   `} ${props =>
-    props.shouldHide &&
-    !props.forcePin &&
+    props.state === 'unpinned' &&
     `
-    transform: translateY(-100%)
-  `};
+    transform: translateY(-100%);
+  `} ${props =>
+    props.shouldAnimate && `
+    transition: transform .2s ease-in-out;
+  `}
 `
 
-class Header extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      state: props.state,
-      shouldHide: props.state === 'unpinned',
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.state !== prevProps.state) {
-      if (this.props.state === 'unpinned') {
-        this.setState(
-          {
-            shouldHide: true,
-          },
-          () => {
-            window.requestAnimationFrame(() => {
-              this.setState({ state: 'unpinned' })
-            })
-          },
-        )
-      } else {
-        this.setState({
-          shouldHide: false,
-          state: this.props.state,
-        })
-      }
-    }
-  }
-
-  render() {
-    const { state, forcePin, ...restProps } = this.props
-    return (
-      <StyledHeader
-        {...restProps}
-        state={this.state.state}
-        shouldHide={this.state.shouldHide}
-        forcePin={forcePin}
-      />
-    )
-  }
-}
-
-Header.propTypes = {
-  state: PropTypes.string.isRequired,
-}
-
-export default Header
+export default StyledHeader

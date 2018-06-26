@@ -23,14 +23,14 @@ class Page extends React.Component {
         <GoogleFont typography={typography} />
         <TypographyStyle typography={typography} />
         <Reheaded calcHeightOnResize={!sticky} onUnfix={onUnfix} onPin={onPin} onUnpin={onUnpin}>
-          {({ setRef, height, state }) => {
+          {({ setRef, height, ...restProps }) => {
             const content = (
               <Header
                 innerRef={setRef}
                 data-testid="headerContainer"
-                data-state={state}
-                state={state}
+                data-state={restProps.state}
                 sticky={sticky}
+                {...restProps}
               >
                 <Container>
                   <HeaderWrapper>

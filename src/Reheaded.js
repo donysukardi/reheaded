@@ -15,7 +15,8 @@ class Reheaded extends Component {
     this.scrollTicking = false
     this.resizeTicking = false
     this.state = {
-      state: 'unfixed',
+      state: props.forcePin ? 'pinned' : 'unfixed',
+      shouldAnimate: false,
       height: 0,
     }
   }
@@ -116,25 +117,26 @@ class Reheaded extends Component {
     }
   }
 
+  setNewState = state => {
+    this.setState(prevState => ({
+      state,
+      shouldAnimate: prevState.state !== 'unfixed',
+    }))
+  }
+
   unpin = () => {
     this.props.onUnpin()
-    this.setState({
-      state: 'unpinned',
-    })
+    this.setNewState('unpinned')
   }
 
   pin = () => {
     this.props.onPin()
-    this.setState({
-      state: 'pinned',
-    })
+    this.setNewState('pinned')
   }
 
   unfix = () => {
     this.props.onUnfix()
-    this.setState({
-      state: 'unfixed',
-    })
+    this.setNewState('unfixed')
   }
 
   update = () => {
@@ -164,11 +166,14 @@ class Reheaded extends Component {
   }
 
   componentDidMount() {
-    const { disabled, parent: parentFn, calcHeightOnResize } = this.props
+    const { disabled, forcePin, parent: parentFn, calcHeightOnResize } = this.props
     this.setHeightOffset()
+
+    const parent = parentFn()
     if (!disabled) {
-      const parent = parentFn()
-      parent.addEventListener('scroll', this.handleScroll)
+      if(!forcePin) {
+        parent.addEventListener('scroll', this.handleScroll)
+      }
       if (calcHeightOnResize) {
         parent.addEventListener('resize', this.handleResize)
       }
@@ -184,6 +189,13 @@ class Reheaded extends Component {
 
   componentDidUpdate(prevProps) {
     const parent = this.props.parent()
+    if(this.props.forcePin && !prevProps.forcePin) {
+      this.pin()
+      parent.removeEventListener('scroll', this.handleScroll)
+    } else if(!this.props.forcePin && prevProps.forcePin) {
+      parent.addEventListener('scroll', this.handleScroll)
+    }
+
     if (this.props.disabled && !prevProps.disabled) {
       this.unfix()
       parent.removeEventListener('scroll', this.handleScroll)
@@ -227,11 +239,13 @@ Reheaded.propTypes = {
   onUnpin: PropTypes.func,
   onUnfix: PropTypes.func,
   pinStart: PropTypes.number,
+  forcePin: PropTypes.bool,
   calcHeightOnResize: PropTypes.bool,
 }
 
 Reheaded.defaultProps = {
   parent: () => window,
+  forcePin: false,
   disabled: false,
   upTolerance: 5,
   downTolerance: 5,

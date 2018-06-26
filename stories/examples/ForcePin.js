@@ -36,8 +36,13 @@ class Page extends React.Component {
       <div>
         <GoogleFont typography={typography} />
         <TypographyStyle typography={typography} />
-        <Reheaded onUnfix={onUnfix} onPin={onPin} onUnpin={onUnpin}>
-          {({ setRef, height, state }) => (
+        <Reheaded
+          onUnfix={onUnfix}
+          onPin={onPin}
+          onUnpin={onUnpin}
+          forcePin={forcePin}
+        >
+          {({ setRef, height, ...restProps }) => (
             <div
               style={{
                 height
@@ -46,9 +51,8 @@ class Page extends React.Component {
               <Header
                 innerRef={setRef}
                 data-testid="headerContainer"
-                data-state={state}
-                state={state}
-                forcePin={forcePin}
+                data-state={restProps.state}
+                {...restProps}
               >
                 <Container>
                   <HeaderWrapper>

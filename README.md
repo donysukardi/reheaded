@@ -33,6 +33,13 @@ Primitive to build simple and flexible sticky React header components
 npm install --save reheaded
 ```
 
+## Overview
+
+The library exposes 3 different states for the header in relation to the parent container, i.e.
+* `unfixed` - header is sitting on top of the container
+* `unpinned` - container is scrolling down past the header height and gets hidden
+* `pinned` - container is scrolling up and gets displayed
+
 ## Usage
 
 ```jsx
@@ -66,6 +73,83 @@ class Example extends Component {
   }
 }
 ```
+
+## Props
+
+| prop                 | type     | default        | description                                                                                                                |
+| -------------------- | -------- | -------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `parent`             | `func`   | `() => window` | Callback returning parent container node                                                                                   |
+| `children`           | `func`   |                | Render function that will receive [Children Render Props](#children-render-props)                                    |
+| `upTolerance`        | `number` | `5`            | Scroll tolerance in px when scrolling up before component is pinned                                                        |
+| `downTolerance`      | `number` | `5`            | Scroll tolerance in px when scrolling down before component is unpinned                                                    |
+| `onPin`              | `func`   | `() => {}`     | Callback when the header gets pinned                                                                                       |
+| `onUnpin`            | `func`   | `() => {}`     | Callback when the header gets unpinned                                                                                     |
+| `onUnfix`            | `func`   | `() => {}`     | Callback when the header gets unfixed                                                                                      |
+| `pinStart`           | `number` | `0`            | Height in px where the header should start and stop pinning. Useful when you have another element above Headroom component |
+| `forcePin`           | `bool`   | `false`        | Flag to persist pinning, this sets the state to `'pinned'`                                                                                                   |
+| `disabled`           | `bool`   | `false`        | Disable pinning and unpinning                                                                                              |
+| `calcHeightOnResize` | `bool`   | `true`         | Flag to indicate whether height should be recalculated on parent resize                                                    |
+
+## Chilren Render Props
+
+| render prop         | type     | description                                                                                                                |
+| ------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `setRef`            | `func`   | Scroll tolerance in px when scrolling down before component is unpinned                                                    |
+| `state`             | `func`   | Callback returning parent container node                                                                                   |
+| `shouldAnimate`     | `bool`   | Flag to apply CSS transition. Ref: [Animation](#animation)                                  |
+| `height`            | `number` | Height of the container as set in `setRef`. Ref: [Sticky or Fixed](#sticky-or-fixed)                                                       |
+
+## Recipes
+
+### Basic Styling
+
+You should apply the following basic styles to your header component based on the state prop received.
+
+* `unfixed` - position: static
+* `unpinned` - position: sticky/fixed and transform: translateY(-100%)
+* `pinned` - position: sticky/fixed
+
+### Sticky or Fixed
+
+Using `position: fixed` for `pinned`/`unpinned` state is a bit tricky as element with fixed position does not contribute to the height of the container/window.
+
+This way, when switching from `position: static` to `position: fixed`, the overall page height changes, affecting the scoll position.
+
+To work around this, you have to wrap your header component and assign the height of your header to it, e.g.
+
+```jsx
+<Reheaded>
+  {({ setRef, height, state }) => (
+    <div style={{ height }}>
+      <FixedHeader innerRef={setRef} state={state} />
+    </div>
+  )}
+</Reheaded>
+```
+
+The same does not apply to `position: sticky`, hence you can safely ignore the height provided.
+
+Ref: [Can I Use?](https://caniuse.com/#feat=css-sticky)
+
+```jsx
+<Reheaded>
+  {({ setRef, state }) => (
+    <StickyHeader innerRef={setRef} state={state} />
+  )}
+</Reheaded>
+```
+
+### Animation
+
+If you'd like to add CSS animation to your header for smoother pinning/unpinning, Reheaded exposes `shouldAnimate` in the render function.
+This value is only set to `true` if the state switches from `pinned` to `unpinned` or vice-versa.
+
+This helps prevent the header from jumping when switching from `unfixed` to `unpinned` during initial scrolling as we will be animating on `transform` attribute.
+The transition would happen from `unfixed` with `transform: none` or `translateY(0)` to `unpinned` with `transform: translateY(-100)`. Hence it's necessary not to enable transition during this switch.
+
+### Example with styled-components
+
+You can view the example styling with styled-components [here](https://github.com/donysukardi/reheaded/blob/master/stories/components/Header.js)
 
 ## Contributors
 

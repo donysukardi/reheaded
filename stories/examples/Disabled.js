@@ -41,7 +41,7 @@ class Page extends React.Component {
           onPin={onPin}
           onUnpin={onUnpin}
         >
-          {({ setRef, height, state }) => (
+          {({ setRef, height, ...restProps }) => (
             <div
               style={{
                 height
@@ -50,8 +50,8 @@ class Page extends React.Component {
               <Header
                 innerRef={setRef}
                 data-testid="headerContainer"
-                data-state={state}
-                state={state}
+                data-state={restProps.state}
+                {...restProps}
               >
                 <Container>
                   <HeaderWrapper>

@@ -75,6 +75,35 @@ test('Reheaded didMount registers scroll event listener', () => {
   expect(parent.removeEventListener.mock.calls[1][0]).toBe('resize')
 })
 
+test('Reheaded toggling forcePin on should remove event listeners', () => {
+  const parent = getParent()
+  const parentFn = () => parent
+
+  const { rerender } = render(<ReheadedExample parent={parentFn} />)
+
+  expect(parent.addEventListener.mock.calls[0][0]).toBe('scroll')
+
+  rerender(<ReheadedExample parent={parentFn} forcePin />)
+
+  expect(parent.removeEventListener.mock.calls[0][0]).toBe('scroll')
+})
+
+test('Reheaded toggling forcePin off should add event listeners', () => {
+  const parent = getParent()
+  const parentFn = () => parent
+
+  const { rerender } = render(<ReheadedExample parent={parentFn} forcePin />)
+
+  expect(parent.addEventListener).toHaveBeenCalledTimes(1)
+
+  parent.addEventListener.mockClear()
+
+  rerender(<ReheadedExample parent={parentFn} />)
+
+  expect(parent.addEventListener).toHaveBeenCalledTimes(1)
+  expect(parent.addEventListener.mock.calls[0][0]).toBe('scroll')
+})
+
 test('Reheaded toggling disabled on should remove event listeners', () => {
   const parent = getParent()
   const parentFn = () => parent
